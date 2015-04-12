@@ -1,0 +1,74 @@
+<% initial_date = nil %>
+<div class="container" id="sortable">
+    <% leads.each do |lead| %>
+        <% lead_category = initial_date != lead.due_date %>
+        <% initial_date = lead.due_date %>
+        <% if lead_category %>
+            <div class="row lead_category">
+                <div class="col-md-4">
+                    <%= lead.due_date.strftime('%d %B %Y') %>
+                </div>
+            </div>
+        <% end %>
+
+        <div class="row">
+            <div class="col-md-4">
+                <span><%= lead.description %></span>
+            </div>
+            <div class="col-md-2">
+                <span><%= lead.name %></span>
+                <span>Ph: <%= lead.phone %></span>
+            </div>
+
+            <div class="col-md-2">
+                <span><%= lead.due_date %></span>
+                <%= select_tag 'lead[][status]', options_from_collection_for_select(Lead::STATUS, :first, :last, lead.status) %>
+            </div>
+
+            <div class="col-md-2">
+                <span><%= lead.value %></span>
+            </div>
+            <div class="col-md-2">
+                <span><%= lead.category.name %></span>
+            </div>
+        </div>
+
+        <% if lead_category %>
+            <div class="row ui-state-disabled">
+                <div class="col-md-4">
+                    <a class="add_lead_link" href="#">Add New Lead</a>
+                </div>
+            </div>
+
+            <div class="row ui-state-disabled add_new_lead is-hidden">
+                <div class="col-md-4">
+                    <%= text_area_tag 'lead[][description]', '' %>
+                </div>
+                <div class="col-md-2">
+                    <%= text_field_tag 'lead[][name]', '', :placeholder => 'Enter Name*' %>
+                    <%= text_field_tag 'lead[][phone]', '', :placeholder => 'Number*' %>
+                </div>
+
+                <div class="col-md-2">
+                    <%= text_field_tag 'lead[][due_date]', '', :placeholder => 'Action Due Date' %>
+                </div>
+                <div class="col-md-2">
+                    <%= text_field_tag 'lead[][value]', '', :placeholder => 'Value' %>
+                </div>
+                <div class="col-md-2">
+                    <%= select_tag 'lead[][category]',
+                       "<option value=''>Category</option>".html_safe +
+                       options_from_collection_for_select(categories, 'id', 'name') %>
+                </div>
+            </div>
+        <% end %>
+    <% end %>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        toggle_new_lead();
+        $( "#sortable" ).sortable();
+    });
+</script>

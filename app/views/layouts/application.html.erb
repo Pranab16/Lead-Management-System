@@ -2,13 +2,44 @@
 <html>
 <head>
   <title>LeadManagementSystem</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+<header>
+    <div class="header_wrapper">
+        <div class="pull-left logo_wrapper">
+            <a href=""></a>
+        </div>
 
+        <% if current_user %>
+
+        <% end %>
+        <div class="logout navbar-text pull-right">
+            <% if user_signed_in? %>
+                <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+            <% else %>
+                <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+                <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+            <% end %>
+        </div>
+
+
+    </div>
+</header>
+
+<div class="content">
+    <% if notice %>
+        <p class="alert alert-notice"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+        <p class="alert alert-error"><%= alert %></p>
+    <% end %>
+
+    <%= content_for?(:content) ? yield(:content) : yield %>
+</div>
 </body>
 </html>

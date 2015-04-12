@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20150411073828) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "name",                                   null: false
+    t.string   "name"
     t.boolean  "is_superuser",           default: false, null: false
     t.boolean  "boolean",                default: false, null: false
     t.datetime "created_at"
